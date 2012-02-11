@@ -22,12 +22,15 @@
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-var jsparse = require("./jsparse");
+try {
+    var jsparse = require("./jsparse");
+} catch (e) {}
+
 
 var passed = [];
 var failed = [];
 
-function print(str) {
+var print = print || function print(str) {
     console.log(str);
 }
 
@@ -225,4 +228,7 @@ function ParserTests() {
 
 time(function() { runTests(ParserTests); });
 
-process.exit(failed.length)
+try {
+  process.exit(failed.length)
+} catch(e) {}
+
