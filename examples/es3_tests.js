@@ -1,15 +1,15 @@
 // Copyright (C) 2007 Chris Double.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
-// 
+//
 // 1. Redistributions of source code must retain the above copyright notice,
 //    this list of conditions and the following disclaimer.
-// 
+//
 // 2. Redistributions in binary form must reproduce the above copyright notice,
 //    this list of conditions and the following disclaimer in the documentation
 //    and/or other materials provided with the distribution.
-// 
+//
 // THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
 // INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
 // FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
@@ -21,6 +21,9 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
+
+//This has NOT been updated to use jsparse.*
+
 load("jsparse.js");
 load("es3.js");
 load("tests.js");
@@ -36,7 +39,7 @@ function LineTerminatorTest() {
     assertTrue("LineTerminator failed to parse newline", LineTerminator(ps("\n")));
     assertFalse("LineTerminator parsed incorrect data", LineTerminator(ps("abcd")));
 }
-    
+
 function SingleLineCommentTest() {
     assertTrue("SingleLineComment failed to parse comment with no space", SingleLineComment(ps("//foo\n")));
     assertTrue("SingleLineComment failed to parse comment with space", SingleLineComment(ps("// foo\n")));
@@ -86,7 +89,7 @@ function NonZeroDigitTest() {
 function IdentifierTest() {
     assertFullyParsed("Identifier", "abcd");
     assertFalse("Identifier('while')", Identifier(ps('while')));
-    assertTrue("Identifier('abcd').ast=='abcd'", Identifier(ps('abcd')).ast=='abcd'); 
+    assertTrue("Identifier('abcd').ast=='abcd'", Identifier(ps('abcd')).ast=='abcd');
 }
 
 function DecimalDigitsTest() {
@@ -167,7 +170,7 @@ function FunctionDeclarationTest() {
     assertFullyParsed("FunctionBody", "return 123;");
     assertFullyParsed("FunctionBody", "return function() { };");
 }
-    
+
 function allTests() {
     WhitespaceTest();
     LineTerminatorTest();
