@@ -2,7 +2,7 @@ jsparse
 =======
 
 This is a simple library of parser combinators for Javascript based on
-Packrat parsers [1] and Parsing expression grammars [2]. 
+Packrat parsers [1] and Parsing expression grammars [2].
 
 [1] http://pdos.csail.mit.edu/~baford/packrat/
 [2] http://en.wikipedia.org/wiki/Parsing_expression_grammar
@@ -17,20 +17,19 @@ Examples:
 tests.js
   Various tests to ensure things are working
 
-example1.js
+examples/example1.js
   Simple expression example from wikipedia article on PEGs.
 
-example2.js
+examples/example2.js
   Expression example with actions used to produce AST.
 
-example3.js
+examples/example3.js
   Expression example with actions used to evaluate as it parses.
 
-es3.js 
+examples/es3.js
   Incomplete/work-in-progress ECMAScript 3 parser
 
-es3_tests.js
+examples/es3_tests.js
   Tests for ECMAScript 3 parser
 
-I use it from within the Mozilla Rhino environment but it also works
-in the browser.
+It has been updated to work in nodejs as well as in the browser.

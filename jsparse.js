@@ -279,17 +279,19 @@ jsparse.negate = function negate(p) {
 }
 
 // 'end' is a parser that is successful if the input string is empty (ie. end of parse).
-jsparse.end = function end_p(state) {
+jsparse.end = function end(state) {
     if(state.length == 0)
         return jsparse.make_result(state, undefined, undefined);
     else
         return false;
 }
+jsparse.end_p = jsparse.end;
 
 // 'nothing' is a parser that always fails.
-jsparse.nothing = function nothing_p(state) {
+jsparse.nothing = function nothing(state) {
     return false;
 }
+jsparse.nothing_p = jsparse.nothing;
 
 // 'sequence' is a parser combinator that processes a number of parsers in sequence.
 // It can take any number of arguments, each one being a parser. The parser that 'sequence'

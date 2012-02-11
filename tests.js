@@ -155,11 +155,11 @@ function ParserTests() {
     assertFullyParsed("jsparse.negate(jsparse.ch('a'))", "b");
     assertParseFailed("jsparse.negate(jsparse.ch('a'))", "a");
 
- //    // end_p
+ //    // end
     assertParseFailed("jsparse.end", "ab");
     assertFullyParsed("jsparse.end", "");
 
- //    // nothing_p
+ //    // nothing
     assertParseFailed("jsparse.nothing", "abcd");
     assertParseFailed("jsparse.nothing", "");
 
