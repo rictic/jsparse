@@ -71,46 +71,46 @@ function assertNotEqual(msg, value1, value2) {
 
 function assertFullyParsed(parser, string) {
     var msg = parser + " did not fully parse: " + string;
-    // try {
+    try {
     	var result = eval(parser)(jsparse.ps(string));
     	if(result && result.remaining.length == 0)
     	    passed.push(msg);
     	else
     	    failed.push(msg);
-    // }
-    // catch(e) {
-    //     console.log(e);
-    // 	failed.push(msg);
-    // }
+    }
+    catch(e) {
+        console.log(e);
+    	failed.push(msg);
+    }
 }
 
 function assertParseFailed(parser, string) {
     var msg = parser + " succeeded but should have failed: " + string;
-    // try {
+    try {
     	var result = eval(parser)(jsparse.ps(string));
     	if(!result)
     	    passed.push(msg);
     	else
     	    failed.push(msg);
-        // }
-    // catch(e) {
-    //     console.log(e);
-    // 	failed.push(msg);
-    // }
+        }
+    catch(e) {
+        console.log(e);
+    	failed.push(msg);
+    }
 }
 
 function assertParseMatched(parser, string, expected) {
     var msg = parser + " parse did not match: " + string;
-    // try {
+    try {
     	var result = eval(parser)(jsparse.ps(string));
     	if(result && result.matched == expected)
     	    passed.push(msg);
     	else
     	    failed.push(msg + " got [" + result.matched + "] expected [" + expected + "]");
-    // }
-    // catch(e) {
-    // 	failed.push(msg);
-    // }
+    }
+    catch(e) {
+    	failed.push(msg);
+    }
 }
 
 function time(func) {

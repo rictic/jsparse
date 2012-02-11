@@ -12,5 +12,17 @@
   </script>
   <script type="text/javascript" src="jsparse.js"></script>
   <script type="text/javascript" src="tests.js"></script>
+  <script type="text/javascript">
+    failed = [];
+    jsparse.inject_into(window);
+    assertParseMatched("sequence('a', whitespace('b'))", "a b", "ab");
+    if (failed.length === 0) {
+      print("inject_into worked");
+    } else {
+      print("inject_into seems to have failed");
+    }
+
+
+  </script>
 </body>
 </html>
