@@ -27,7 +27,7 @@ examples/example3.js
   Expression example with actions used to evaluate as it parses.
 
 examples/es3.js
-  Incomplete/work-in-progress ECMAScript 3 parser
+  Incomplete/work-in-progress ECMAScript 3 parser (currently broken)
 
 examples/es3_tests.js
   Tests for ECMAScript 3 parser
