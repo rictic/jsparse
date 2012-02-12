@@ -1,15 +1,15 @@
 // Copyright (C) 2007 Chris Double.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
-// 
+//
 // 1. Redistributions of source code must retain the above copyright notice,
 //    this list of conditions and the following disclaimer.
-// 
+//
 // 2. Redistributions in binary form must reproduce the above copyright notice,
 //    this list of conditions and the following disclaimer in the documentation
 //    and/or other materials provided with the distribution.
-// 
+//
 // THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
 // INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
 // FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
@@ -28,9 +28,18 @@
 // Value   := [0-9]+ / '(' Expr ')'
 // Product := Value (('*' / '/') Value)*
 // Sum     := Product (('+' / '-') Product)*
-// Expr    := Sum 
+// Expr    := Sum
 //
-// Forward definitions required due to lack of laziness in JS 
+
+//to run in both node and browser
+try {
+  var jp = require("../jsparse")
+} catch(e) {
+  var jp = jsparse;
+}
+
+
+// Forward definitions required due to lack of laziness in JS
 var Expr = function(state) { return Expr(state); }
 
 // AST objects
@@ -44,22 +53,37 @@ Operator.prototype.toString = function() {
     return uneval(this);
 }
 
-var Number = 
-    action(repeat1(range('0','9')), 
+var Number =
+    jp.action(jp.repeat1(jp.range('0','9')),
 	   function(ast) {
 	       return parseInt(ast.join(""));
 	   });
-var Value = choice(Number, Expr);
+var Value = jp.choice(Number, Expr);
 function operator_action(p) {
-    return action(p, 
-		  function(ast) { 
+    return jp.action(p,
+		  function(ast) {
 		      return function(lhs,rhs) {
 			  return new Operator(ast, lhs, rhs);
 		      };
 		  });
 }
-var Product = chainl(Value, operator_action(choice('*', '/')));
-var Sum = chainl(Product, operator_action(choice('+', '-')));
+var Product = jp.chainl(Value, operator_action(jp.choice('*', '/')));
+var Sum = jp.chainl(Product, operator_action(jp.choice('+', '-')));
 var Expr = Sum;
 
-// Usage: Expr(ps("1+2*3-4"))
+var example_result = Expr(jp.ps("1+2*3-4")).ast;
+console.log(JSON.stringify(example_result, null, 2))
+//Yields:
+// {
+//   "symbol": "-",
+//   "lhs": {
+//     "symbol": "+",
+//     "lhs": 1,
+//     "rhs": {
+//       "symbol": "*",
+//       "lhs": 2,
+//       "rhs": 3
+//     }
+//   },
+//   "rhs": 4
+// }

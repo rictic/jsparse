@@ -1,15 +1,15 @@
 // Copyright (C) 2007 Chris Double.
-// 
+//
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are met:
-// 
+//
 // 1. Redistributions of source code must retain the above copyright notice,
 //    this list of conditions and the following disclaimer.
-// 
+//
 // 2. Redistributions in binary form must reproduce the above copyright notice,
 //    this list of conditions and the following disclaimer in the documentation
 //    and/or other materials provided with the distribution.
-// 
+//
 // THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
 // INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
 // FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
@@ -27,14 +27,23 @@
 // Value   := [0-9]+ / '(' Expr ')'
 // Product := Value (('*' / '/') Value)*
 // Sum     := Product (('+' / '-') Product)*
-// Expr    := Sum 
+// Expr    := Sum
 //
-// Forward definitions required due to lack of laziness in JS 
+
+//to run in both node and browser
+try {
+  var jp = require("../jsparse")
+} catch(e) {
+  var jp = jsparse;
+}
+
+// Forward definitions required due to lack of laziness in JS
 var Expr = function(state) { return Expr(state); }
 
-var Value = choice(repeat1(range('0','9')), Expr);
-var Product = sequence(Value, repeat0(sequence(choice('*', '/'), Value)));
-var Sum = sequence(Product, repeat0(sequence(choice('+', '-'), Product)));
+var Value = jp.choice(jp.repeat1(jp.range('0','9')), Expr);
+var Product = jp.sequence(Value, jp.repeat0(jp.sequence(jp.choice('*', '/'), Value)));
+var Sum = jp.sequence(Product, jp.repeat0(jp.sequence(jp.choice('+', '-'), Product)));
 var Expr = Sum;
 
-// Usage: Expr(ps("1+2*3-4"))
+console.log(JSON.stringify(Expr(jp.ps("1+2*3-4")).ast))
+//Yields: [[["1"],[]],[["+",[["2"],[["*",["3"]]]]],["-",[["4"],[]]]]]
