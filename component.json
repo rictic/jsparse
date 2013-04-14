@@ -9,12 +9,6 @@
   },
   "main": "jsparse.js",
   "scripts": {
-    "test": "node tests.js"
-  },
-  "engines": {
-    "node": ">0.1.0"
-  },
-  "dependencies": {},
-  "devDependencies": {},
-  "optionalDependencies": {}
+    "test": "node test.js"
+  }
 }
