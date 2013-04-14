@@ -29,7 +29,7 @@
         for(var i=0; i< seq.length; ++i)
             initial = f(initial, seq[i]);
         return initial;
-    }
+    };
 
     mod.memoize = true;
 
@@ -47,25 +47,25 @@
             r.cache = this.cache;
             r.length = this.length - index;
             return r;
-        }
+        };
 
         ParseState.prototype.substring = function(start, end) {
             return this.input.substring(start + this.index, (end || this.length) + this.index);
-        }
+        };
 
         ParseState.prototype.trimLeft = function() {
             var s = this.substring(0);
             var m = s.match(/^\s+/);
             return m ? this.from(m[0].length) : this;
-        }
+        };
 
         ParseState.prototype.at = function(index) {
             return this.input.charAt(this.index + index);
-        }
+        };
 
         ParseState.prototype.toString = function() {
             return 'PS"' + this.substring(0) + '"';
-        }
+        };
 
         ParseState.prototype.getCached = function(pid) {
             if(!mod.memoize)
@@ -76,7 +76,7 @@
                 return p[this.index];
             else
                 return false;
-        }
+        };
 
         ParseState.prototype.putCached = function(pid, cached) {
             if(!mod.memoize)
@@ -89,13 +89,13 @@
                 p = this.cache[pid] = { };
                 p[this.index] = cached;
             }
-        }
+        };
         return ParseState;
-    })()
+    })();
 
     mod.ps = function ps(str) {
         return new mod.ParseState(str);
-    }
+    };
 
     // 'r' is the remaining string to be parsed.
     // 'matched' is the portion of the string that
@@ -103,7 +103,7 @@
     // 'ast' is the AST returned by the successfull parse.
     mod.make_result = function make_result(r, matched, ast) {
         return { remaining: r, matched: matched, ast: ast };
-    }
+    };
 
     mod.parser_id = 0;
 
@@ -125,7 +125,7 @@
             savedState.putCached(pid, cached);
             return cached;
         };
-    }
+    };
 
     // Like 'token' but for a single character. Returns a parser that given a string
     // containing a single character, parses that character value.
@@ -144,7 +144,7 @@
             savedState.putCached(pid, cached);
             return cached;
         };
-    }
+    };
 
     // 'range' is a parser combinator that returns a single character parser
     // (similar to 'ch'). It parses single characters that are in the inclusive
@@ -169,13 +169,13 @@
             savedState.putCached(pid, cached);
             return cached;
         };
-    }
+    };
 
     // Helper function to convert string literals to token parsers
     // and perform other implicit parser conversions.
     mod.toParser = function toParser(p) {
         return (typeof(p) == "string") ? mod.token(p) : p;
-    }
+    };
 
     // Parser combinator that returns a parser that
     // skips whitespace before applying parser.
@@ -192,7 +192,7 @@
             savedState.putCached(pid, cached);
             return cached;
         };
-    }
+    };
 
     // Parser combinator that passes the AST generated from the parser 'p'
     // to the function 'f'. The result of 'f' is used as the AST in the result.
@@ -216,13 +216,13 @@
             savedState.putCached(pid, cached);
             return cached;
         };
-    }
+    };
 
     // Given a parser that produces an array as an ast, returns a
     // parser that produces an ast with the array joined by a separator.
     mod.join_action = function join_action(p, sep) {
         return mod.action(p, function(ast) { return ast.join(sep); });
-    }
+    };
 
     // Given an ast of the form [ Expression, [ a, b, ...] ], convert to
     // [ [ [ Expression [ a ] ] b ] ... ]
@@ -239,13 +239,13 @@
                      },
                      ast[0],
                      ast[1]);
-    }
+    };
 
     // Return a parser that left factors the ast result of the original
     // parser.
     mod.left_factor_action = function left_factor_action(p) {
         return mod.action(p, mod.left_factor);
-    }
+    };
 
     // 'negate' will negate a single character parser. So given 'ch("a")' it will successfully
     // parse any character except for 'a'. Or 'negate(range("a", "z"))' will successfully parse
@@ -272,7 +272,7 @@
             savedState.putCached(pid, cached);
             return cached;
         };
-    }
+    };
 
     // 'end' is a parser that is successful if the input string is empty (ie. end of parse).
     mod.end = function end(state) {
@@ -280,13 +280,13 @@
             return mod.make_result(state, undefined, undefined);
         else
             return false;
-    }
+    };
     mod.end_p = mod.end;
 
     // 'nothing' is a parser that always fails.
     mod.nothing = function nothing(state) {
         return false;
-    }
+    };
     mod.nothing_p = mod.nothing;
 
     // 'sequence' is a parser combinator that processes a number of parsers in sequence.
@@ -329,7 +329,7 @@
             savedState.putCached(pid, cached);
             return cached;
         };
-    }
+    };
 
     // Like sequence, but ignores whitespace between individual parsers.
     mod.wsequence = function wsequence() {
@@ -338,7 +338,7 @@
             parsers.push(mod.whitespace(mod.toParser(arguments[i])));
         }
         return mod.sequence.apply(null, parsers);
-    }
+    };
 
     // 'choice' is a parser combinator that provides a choice between other parsers.
     // It takes any number of parsers as arguments and returns a parser that will try
@@ -369,8 +369,8 @@
                 cached = result;
             savedState.putCached(pid, cached);
             return cached;
-        }
-    }
+        };
+    };
 
     // 'butnot' is a parser combinator that takes two parsers, 'p1' and 'p2'.
     // It returns a parser that succeeds if 'p1' matches and 'p2' does not, or
@@ -407,8 +407,8 @@
             }
             savedState.putCached(pid, cached);
             return cached;
-        }
-    }
+        };
+    };
 
     // 'difference' is a parser combinator that takes two parsers, 'p1' and 'p2'.
     // It returns a parser that succeeds if 'p1' matches and 'p2' does not. If
@@ -438,8 +438,8 @@
             }
             savedState.putCached(pid, cached);
             return cached;
-        }
-    }
+        };
+    };
 
 
     // 'xor' is a parser combinator that takes two parsers, 'p1' and 'p2'.
@@ -465,8 +465,8 @@
                 cached = ar || br;
             savedState.putCached(pid, cached);
             return cached;
-        }
-    }
+        };
+    };
 
     // A parser combinator that takes one parser. It returns a parser that
     // looks for zero or more matches of the original parser.
@@ -494,8 +494,8 @@
             cached = mod.make_result(state, matched, ast);
             savedState.putCached(pid, cached);
             return cached;
-        }
-    }
+        };
+    };
 
     // A parser combinator that takes one parser. It returns a parser that
     // looks for one or more matches of the original parser.
@@ -527,8 +527,8 @@
             }
             savedState.putCached(pid, cached);
             return cached;
-        }
-    }
+        };
+    };
 
     // A parser combinator that takes one parser. It returns a parser that
     // matches zero or one matches of the original parser.
@@ -544,8 +544,8 @@
             cached = r || mod.make_result(state, "", false);
             savedState.putCached(pid, cached);
             return cached;
-        }
-    }
+        };
+    };
 
     // A parser combinator that ensures that the given parser succeeds but
     // ignores its result. This can be useful for parsing literals that you
@@ -553,14 +553,14 @@
     // sequence(expect("("), Number, expect(")")) => ast: Number
     mod.expect = function expect(p) {
         return mod.action(p, function(ast) { return undefined; });
-    }
+    };
 
     mod.chain = function chain(p, s, f) {
         var p = mod.toParser(p);
 
         return mod.action(mod.sequence(p, mod.repeat0(mod.action(mod.sequence(s, p), f))),
                       function(ast) { return [ast[0]].concat(ast[1]); });
-    }
+    };
 
     // A parser combinator to do left chaining and evaluation. Like 'chain', it expects a parser
     // for an item and for a seperator. The seperator parser's AST result should be a function
@@ -573,14 +573,14 @@
                       function(ast) {
                           return mod.foldl(function(v, action) { return action[0](v, action[1]); }, ast[0], ast[1]);
                       });
-    }
+    };
 
     // A parser combinator that returns a parser that matches lists of things. The parser to
     // match the list item and the parser to match the seperator need to
     // be provided. The AST is the array of matched items.
     mod.list = function list(p, s) {
         return mod.chain(p, s, function(ast) { return ast[1]; });
-    }
+    };
 
     // Like list, but ignores whitespace between individual parsers.
     mod.wlist = function wlist() {
@@ -589,12 +589,12 @@
             parsers.push(mod.whitespace(arguments[i]));
         }
         return mod.list.apply(null, parsers);
-    }
+    };
 
     // A parser that always returns a zero length match
     mod.epsilon_p = function epsilon_p(state) {
         return mod.make_result(state, "", undefined);
-    }
+    };
 
     // Allows attaching of a function anywhere in the grammer. If the function returns
     // true then parse succeeds otherwise it fails. Can be used for testing if a symbol
@@ -609,8 +609,8 @@
             cached = f() ? mod.make_result(state, "", undefined) : false;
             savedState.putCached(pid, cached);
             return cached;
-        }
-    }
+        };
+    };
 
     // The and predicate asserts that a certain conditional
     // syntax is satisfied before evaluating another production. Eg:
@@ -631,8 +631,8 @@
             cached = r ? mod.make_result(state, "", undefined) : false;
             savedState.putCached(pid, cached);
             return cached;
-        }
-    }
+        };
+    };
 
     // The opposite of 'and'. It fails if 'p' succeeds and succeeds if
     // 'p' fails. It never consumes any input. This combined with 'and' can
@@ -659,8 +659,8 @@
             cached = p(state) ? false : mod.make_result(state, "", undefined);
             savedState.putCached(pid, cached);
             return cached;
-        }
-    }
+        };
+    };
 
 
     // For ease of use, it's sometimes nice to be able to not have to prefix all
@@ -680,7 +680,7 @@
                 into[key] = mod[key];
             }
         }
-    }
+    };
 
     // Support all the module systems.
     if ( typeof module === "object" && typeof module.exports === "object" ) {
@@ -695,4 +695,4 @@
     } else {
         throw 'could not find valid method to export jsparse';
     }
-})());
+}());
